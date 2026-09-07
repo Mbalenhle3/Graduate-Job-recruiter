@@ -1,0 +1,480 @@
+/* =========================================================
+   GRADUATELINK SA
+   APPLICATIONS PAGE
+========================================================= */
+
+.applications-page {
+  min-height: 100vh;
+  background: #f5f8fc;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.applications-header {
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.applications-header-container {
+  width: 100%;
+  max-width: 1150px;
+  margin: 0 auto;
+
+  padding: 40px 20px;
+
+  box-sizing: border-box;
+}
+
+.applications-label {
+  display: inline-block;
+
+  margin-bottom: 12px;
+
+  padding: 6px 12px;
+
+  background: #e8f1ff;
+  color: #004aad;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  letter-spacing: 0.8px;
+}
+
+.applications-header h1 {
+  margin: 0 0 10px;
+
+  color: #111827;
+
+  font-size: 34px;
+  font-weight: 800;
+}
+
+.applications-header p {
+  max-width: 650px;
+
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.applications-content {
+  padding: 40px 20px 80px;
+}
+
+.applications-container {
+  width: 100%;
+  max-width: 1050px;
+
+  margin: 0 auto;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.applications-topbar {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 25px;
+}
+
+.applications-topbar h2 {
+  margin: 0 0 5px;
+
+  color: #111827;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.applications-topbar p {
+  margin: 0;
+
+  color: #6b7280;
+
+  font-size: 12px;
+}
+
+
+/* =========================================================
+   BUTTON
+========================================================= */
+
+.applications-primary-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 20px;
+
+  background: #004aad;
+  color: #ffffff;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-decoration: none;
+
+  white-space: nowrap;
+}
+
+.applications-primary-button:hover {
+  background: #003580;
+}
+
+
+/* =========================================================
+   APPLICATION LIST
+========================================================= */
+
+.applications-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 15px;
+}
+
+
+/* =========================================================
+   APPLICATION ITEM
+========================================================= */
+
+.application-item {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 18px;
+
+  padding: 22px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-sizing: border-box;
+}
+
+.application-item:hover {
+  border-color: #c8d8ee;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.application-logo {
+  width: 55px;
+  height: 55px;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #004aad;
+
+  color: #ffffff;
+
+  border-radius: 12px;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   INFORMATION
+========================================================= */
+
+.application-info {
+  flex: 1;
+
+  min-width: 0;
+}
+
+.application-title-row {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 13px;
+}
+
+.application-title-row h3 {
+  margin: 0 0 5px;
+
+  color: #111827;
+
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.application-title-row h4 {
+  margin: 0;
+
+  color: #4b5563;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.application-status {
+  flex-shrink: 0;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  padding: 6px 10px;
+
+  border-radius: 20px;
+
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.status-submitted {
+  background: #e8f1ff;
+  color: #004aad;
+}
+
+.status-review {
+  background: #fff7e6;
+  color: #b76b00;
+}
+
+.status-shortlisted {
+  background: #e8f7ef;
+  color: #16834b;
+}
+
+.status-rejected {
+  background: #fdecec;
+  color: #c0392b;
+}
+
+
+/* =========================================================
+   META
+========================================================= */
+
+.application-meta {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 15px;
+
+  margin-bottom: 15px;
+}
+
+.application-meta span {
+  color: #6b7280;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.application-actions {
+  display: flex;
+
+  align-items: center;
+}
+
+.application-view-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 8px 14px;
+
+  background: #ffffff;
+
+  color: #004aad;
+
+  border: 1px solid #004aad;
+
+  border-radius: 7px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.application-view-button:hover {
+  background: #e8f1ff;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.applications-empty {
+  padding: 70px 30px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  text-align: center;
+}
+
+.applications-empty-icon {
+  width: 65px;
+  height: 65px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 18px;
+
+  background: #e8f1ff;
+
+  border-radius: 50%;
+
+  font-size: 26px;
+}
+
+.applications-empty h2 {
+  margin: 0 0 10px;
+
+  color: #111827;
+
+  font-size: 20px;
+}
+
+.applications-empty p {
+  max-width: 500px;
+
+  margin: 0 auto 25px;
+
+  color: #6b7280;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 700px) {
+
+  .applications-topbar {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  .application-title-row {
+    flex-direction: column;
+
+    gap: 10px;
+  }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 550px) {
+
+  .applications-header-container {
+    padding: 30px 15px;
+  }
+
+  .applications-header h1 {
+    font-size: 27px;
+  }
+
+  .applications-content {
+    padding: 25px 15px 60px;
+  }
+
+  .application-item {
+    padding: 18px;
+
+    flex-direction: column;
+  }
+
+  .application-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .application-info {
+    width: 100%;
+  }
+
+  .application-meta {
+    flex-direction: column;
+
+    gap: 7px;
+  }
+
+  .application-view-button {
+    width: 100%;
+  }
+
+  .applications-primary-button {
+    width: 100%;
+  }
+
+  .applications-empty {
+    padding: 50px 20px;
+  }
+
+}

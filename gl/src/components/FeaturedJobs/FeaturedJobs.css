@@ -1,0 +1,279 @@
+/* =========================================================
+   FEATURED JOBS
+========================================================= */
+
+.featured-jobs {
+  padding: 80px 20px;
+  background: #ffffff;
+}
+
+.featured-jobs-container {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.featured-jobs-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 30px;
+
+  margin-bottom: 40px;
+}
+
+.section-label {
+  display: inline-block;
+
+  color: #004aad;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  margin-bottom: 10px;
+}
+
+.featured-jobs-header h2 {
+  color: #111827;
+
+  font-size: 34px;
+
+  margin: 0 0 12px;
+}
+
+.featured-jobs-header p {
+  color: #6b7280;
+
+  font-size: 15px;
+
+  line-height: 1.7;
+
+  max-width: 650px;
+
+  margin: 0;
+}
+
+.view-all-jobs {
+  flex-shrink: 0;
+
+  color: #004aad;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  text-decoration: none;
+}
+
+.view-all-jobs:hover {
+  text-decoration: underline;
+}
+
+/* =========================================================
+   JOB GRID
+========================================================= */
+
+.featured-jobs-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 24px;
+}
+
+/* =========================================================
+   JOB CARD
+========================================================= */
+
+.featured-job-card {
+  padding: 25px;
+
+  background: #f8fbff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.featured-job-card:hover {
+  transform: translateY(-5px);
+
+  border-color: #c9dcf7;
+
+  box-shadow:
+    0 12px 30px rgba(0, 74, 173, 0.12);
+}
+
+/* =========================================================
+   CARD TOP
+========================================================= */
+
+.featured-job-top {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+
+  margin-bottom: 22px;
+}
+
+/* =========================================================
+   COMPANY LOGO
+========================================================= */
+
+.featured-company-logo {
+  width: 52px;
+  height: 52px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background: #e8f1ff;
+
+  color: #004aad;
+
+  border-radius: 10px;
+
+  font-size: 22px;
+
+  font-weight: 800;
+}
+
+/* =========================================================
+   JOB TYPE
+========================================================= */
+
+.featured-job-type {
+  padding: 6px 10px;
+
+  background: #e8f1ff;
+
+  color: #004aad;
+
+  border-radius: 20px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-align: center;
+}
+
+/* =========================================================
+   TEXT
+========================================================= */
+
+.featured-job-card h3 {
+  color: #111827;
+
+  font-size: 19px;
+
+  line-height: 1.4;
+
+  margin: 0 0 8px;
+}
+
+.featured-job-card h4 {
+  color: #004aad;
+
+  font-size: 15px;
+
+  margin: 0 0 14px;
+}
+
+.featured-location {
+  color: #6b7280;
+
+  font-size: 14px;
+
+  margin: 0 0 22px;
+}
+
+/* =========================================================
+   VIEW JOB
+========================================================= */
+
+.featured-view-job {
+  display: block;
+
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 12px;
+
+  text-align: center;
+
+  background: #004aad;
+
+  color: white;
+
+  border-radius: 8px;
+
+  text-decoration: none;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  transition: background 0.3s ease;
+}
+
+.featured-view-job:hover {
+  background: #003580;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+  .featured-jobs-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 650px) {
+
+  .featured-jobs {
+    padding: 60px 15px;
+  }
+
+  .featured-jobs-header {
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    gap: 20px;
+  }
+
+  .featured-jobs-header h2 {
+    font-size: 28px;
+  }
+
+  .featured-jobs-grid {
+    grid-template-columns: 1fr;
+  }
+
+}
