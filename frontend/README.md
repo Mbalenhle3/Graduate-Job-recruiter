@@ -17,14 +17,20 @@ src/
 │   └── layout/          Role dashboard layout and navigation
 ├── data/                Demonstration data and route constants
 ├── pages/
-│   ├── auth/            Sign in, registration and password reset
-│   ├── job-seeker/      Job Seeker pages
-│   ├── employer/        Employer pages
-│   └── admin/           Administrator pages
+│   ├── auth/            One file for each authentication page
+│   ├── job-seeker/      One file for each Job Seeker page
+│   ├── employer/        One file for each Employer page
+│   └── admin/           Administrator pages only
+│       ├── AdminDashboard.jsx
+│       ├── EmployerVerificationPage.jsx
+│       ├── OpportunityReviewPage.jsx
+│       ├── UserManagementPage.jsx
+│       ├── ReportsPage.jsx
+│       └── index.js     Simple page exports
 └── App.jsx              Routes, session state and shared actions only
 ```
 
-The website opens on the sign-in page. There is no public opportunity page. After sign-in, the account role controls which folder of pages and routes can be accessed.
+Every screen has its own file. Each role folder contains only pages for that role, and each folder has a small `index.js` for clean imports. The website opens on the sign-in page, and the account role controls which routes can be accessed.
 
 The interface currently uses realistic demonstration data. It is ready to connect to the selected backend through a REST API after the team finalises the backend technology.
 
@@ -42,6 +48,8 @@ The interface currently uses realistic demonstration data. It is ready to connec
 - Administrators can approve/reject employers and opportunities, suspend/restore users, investigate reports and remove reported content.
 
 The current sign-in is a frontend demonstration. The backend must later verify passwords, issue secure sessions or tokens, and enforce the same role permissions on every API endpoint.
+
+Profile changes are saved in browser local storage for frontend testing. The Job Seeker profile includes contact details, education, career preferences, skills, projects and a CV. The Employer profile includes contact, registration, industry, location, company description and verification information. The opportunity form captures all listing fields before adding a Pending opportunity.
 
 ## Run the project
 

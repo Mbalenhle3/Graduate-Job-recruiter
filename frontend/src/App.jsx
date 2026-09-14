@@ -2,10 +2,10 @@ import { useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import PortalLayout from "./components/layout/PortalLayout";
 import { ROLE_HOME, initialApplications, initialEmployerJobs, initialEmployers } from "./data/mockData";
-import { ForgotPasswordPage, RegisterPage, SignInPage } from "./pages/auth/AuthPages";
-import { ApplicationsPage, JobDetailsPage, JobSeekerDashboard, JobSeekerProfilePage, JobsPage, SavedJobsPage } from "./pages/job-seeker/JobSeekerPages";
-import { ApplicantsPage, EmployerDashboard, EmployerOpportunitiesPage, NewOpportunityPage, OrganisationProfilePage } from "./pages/employer/EmployerPages";
-import { AdminDashboard, EmployerVerificationPage, OpportunityReviewPage, ReportsPage, UserManagementPage } from "./pages/admin/AdminPages";
+import { ForgotPasswordPage, RegisterPage, SignInPage } from "./pages/auth";
+import { ApplicationsPage, JobDetailsPage, JobSeekerDashboard, JobSeekerProfilePage, JobsPage, SavedJobsPage } from "./pages/job-seeker";
+import { ApplicantsPage, EmployerDashboard, EmployerOpportunitiesPage, NewOpportunityPage, OrganisationProfilePage } from "./pages/employer";
+import { AdminDashboard, EmployerVerificationPage, OpportunityReviewPage, ReportsPage, UserManagementPage } from "./pages/admin";
 
 export default function App() {
   const [session,setSession] = useState(null);
