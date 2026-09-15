@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 
 import useAuth from "../../hooks/useAuth";
 import { Icon, Logo } from "../common/AppUI";
+import NotificationsPanel from "../common/NotificationsPanel";
 
 
 const navigation = {
@@ -88,6 +89,7 @@ const navigation = {
       "/admin/reports",
       "doc",
     ],
+    ["My profile", "/admin/profile", "user"],
   ],
 };
 
@@ -238,13 +240,7 @@ export default function PortalLayout({
               {roleNames[role]}
             </span>
 
-            <button
-              type="button"
-              className="bell"
-              aria-label="Notifications"
-            >
-              <Icon name="bell" />
-            </button>
+            <NotificationsPanel />
 
             <div
               className="avatar"

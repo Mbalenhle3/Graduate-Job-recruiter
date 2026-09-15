@@ -1,25 +1,5 @@
-import { Intro, Stat } from "../../components/common/AppUI";
-
-export default function AdminDashboard({ employers }) {
-  const approved = employers.filter((item) => item.status === "Approved").length;
-  const pending = employers.filter((item) => item.status === "Pending").length;
-
-  return <>
-    <Intro eyebrow="ADMINISTRATOR DASHBOARD" title="Platform trust and activity" copy="Review employers, opportunities, users and reports."/>
-    <div className="stats">
-      <Stat label="Registered users" value="1,248" note="86 joined this month" icon="user"/>
-      <Stat label="Approved employers" value={approved} note={`${pending} pending`} tone="teal" icon="shield"/>
-      <Stat label="Active opportunities" value="136" note="9 awaiting review" tone="purple" icon="briefcase"/>
-      <Stat label="Open reports" value="3" note="Require attention" tone="orange" icon="bell"/>
-    </div>
-    <section className="panel">
-      <h2 className="form-title">Administration responsibilities</h2>
-      <div className="facts">
-        <div><span>Employer verification</span><b>Check company information and documents</b></div>
-        <div><span>Opportunity moderation</span><b>Approve or reject submitted listings</b></div>
-        <div><span>User management</span><b>Suspend or restore accounts</b></div>
-        <div><span>Reports</span><b>Investigate and remove unsafe content</b></div>
-      </div>
-    </section>
-  </>;
-}
+import { useEffect, useState } from "react";
+import { Intro, Stat, Status } from "../../components/common/AppUI";
+import { getApiError } from "../../services/api";
+import { getAdminDashboard } from "../../services/platformService";
+export default function AdminDashboard() { const [data, setData] = useState(null), [error, setError] = useState(""); useEffect(() => { getAdminDashboard().then(setData).catch((requestError) => setError(getApiError(requestError))); }, []); return <><Intro eyebrow="ADMINISTRATOR DASHBOARD" title="Platform trust and activity" copy="Review employers, opportunities and users."/>{error && <div className="form-error">{error}</div>}<div className="stats"><Stat label="Registered users" value={data?.total_users ?? 0} note={`${data?.suspended_users ?? 0} suspended`} icon="user"/><Stat label="Approved employers" value={data?.approved_employers ?? 0} note={`${data?.pending_employer_verifications ?? 0} pending`} tone="teal" icon="shield"/><Stat label="Published opportunities" value={data?.published_opportunities ?? 0} note={`${data?.pending_opportunities ?? 0} awaiting review`} tone="purple" icon="briefcase"/><Stat label="Rejected opportunities" value={data?.rejected_opportunities ?? 0} note="Moderation outcomes" tone="orange" icon="doc"/></div><section className="panel"><h2 className="form-title">Recent administrator activity</h2><div className="table-wrap"><table><thead><tr><th>Action</th><th>Description</th><th>Date</th></tr></thead><tbody>{data?.recent_activities?.map((item) => <tr key={item.id}><td><Status>{item.action.replaceAll("_"," ")}</Status></td><td>{item.description}</td><td>{new Date(item.created_at).toLocaleString()}</td></tr>)}</tbody></table></div></section></>; }

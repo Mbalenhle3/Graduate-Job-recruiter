@@ -1,16 +1,5 @@
+import { useEffect, useState } from "react";
 import { Intro, Status } from "../../components/common/AppUI";
-
-export default function EmployerVerificationPage({ employers, setEmployers }) {
-  const decide = (id, status) => setEmployers((list) => list.map((item) => item.id === id ? {...item, status} : item));
-
-  return <>
-    <Intro eyebrow="EMPLOYER VERIFICATION" title="Review organisation requests" copy="Approval allows an Employer to publish opportunities."/>
-    <section className="panel"><div className="table-wrap"><table>
-      <thead><tr><th>Organisation</th><th>Document</th><th>Status</th><th>Actions</th></tr></thead>
-      <tbody>{employers.map((item) => <tr key={item.id}>
-        <td><b>{item.name}</b><span>{item.email}</span></td><td>{item.document}</td><td><Status>{item.status}</Status></td>
-        <td><div className="row-actions"><button onClick={() => decide(item.id,"Approved")}>Approve</button><button onClick={() => decide(item.id,"Rejected")}>Reject</button></div></td>
-      </tr>)}</tbody>
-    </table></div></section>
-  </>;
-}
+import { getApiError } from "../../services/api";
+import { downloadEmployerDocument, getAdminEmployers, reviewEmployer } from "../../services/platformService";
+export default function EmployerVerificationPage() { const [items, setItems] = useState([]), [filter, setFilter] = useState("pending"), [error, setError] = useState(""); useEffect(() => { getAdminEmployers(filter ? { status: filter } : {}).then(setItems).catch((requestError) => setError(getApiError(requestError))); }, [filter]); async function decide(item, decision) { let reason = null; if (decision === "rejected") { reason = prompt("Reason for rejection"); if (!reason?.trim()) return; } try { const updated = await reviewEmployer(item.id, { decision, reason }); setItems((list) => list.map((row) => row.id === item.id ? updated : row)); } catch (requestError) { setError(getApiError(requestError)); } } async function download(item) { try { const blob = await downloadEmployerDocument(item.id); const url = URL.createObjectURL(blob); const link = document.createElement("a"); link.href = url; link.download = item.verification_document_name || "verification-document"; link.click(); URL.revokeObjectURL(url); } catch (requestError) { setError(getApiError(requestError)); } } return <><Intro eyebrow="EMPLOYER VERIFICATION" title="Review organisation requests" copy="Approval allows an employer to submit opportunities."/>{error && <div className="form-error">{error}</div>}<div className="tabs">{["pending","approved","rejected",""] .map((value) => <button key={value || "all"} className={filter === value ? "active" : ""} onClick={() => setFilter(value)}>{value || "all"}</button>)}</div><section className="panel"><div className="table-wrap"><table><thead><tr><th>Organisation</th><th>Document</th><th>Status</th><th>Actions</th></tr></thead><tbody>{items.map((item) => <tr key={item.id}><td><b>{item.organisation_name || "Unnamed organisation"}</b><span>{item.contact_email || item.account_email}</span></td><td><button className="text-action" onClick={() => download(item)} disabled={!item.verification_document_name}>{item.verification_document_name || "No document"}</button></td><td><Status>{item.verification_status}</Status></td><td><div className="row-actions"><button disabled={item.verification_status !== "pending"} onClick={() => decide(item,"approved")}>Approve</button><button disabled={item.verification_status !== "pending"} onClick={() => decide(item,"rejected")}>Reject</button></div></td></tr>)}</tbody></table></div></section></>; }

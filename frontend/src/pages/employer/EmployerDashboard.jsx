@@ -1,12 +1,8 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Icon, Intro, Stat } from "../../components/common/AppUI";
+import useAuth from "../../hooks/useAuth";
+import { getApiError } from "../../services/api";
+import { getEmployerDashboard, getEmployerOpportunities } from "../../services/platformService";
 import OpportunityTable from "./OpportunityTable";
-
-export default function EmployerDashboard({ opportunities }) {
-  return <>
-    <Intro eyebrow="EMPLOYER DASHBOARD" title="Good afternoon, Thandi" copy="Manage your organisation, opportunities and applicants." action={<Link className="button primary small" to="/employer/opportunities/new"><Icon name="plus"/>Post opportunity</Link>}/>
-    <div className="verification"><Icon name="shield"/><span><b>Organisation approved</b><p>Your organisation was reviewed by an Administrator.</p></span><em>Approved</em></div>
-    <div className="stats"><Stat label="Active opportunities" value={opportunities.filter((item) => item.status==="Active").length} note="Published listings" icon="briefcase"/><Stat label="Total applicants" value={opportunities.reduce((sum,item) => sum+item.applicants,0)} note="Across your listings" tone="teal" icon="user"/><Stat label="Verification" value="Approved" note="Publishing allowed" tone="purple" icon="shield"/></div>
-    <section className="panel"><h2 className="form-title">Recent opportunities</h2><OpportunityTable opportunities={opportunities}/></section>
-  </>;
-}
+export default function EmployerDashboard() { const { user } = useAuth(); const [stats, setStats] = useState(null), [items, setItems] = useState([]), [error, setError] = useState(""); useEffect(() => { Promise.all([getEmployerDashboard(), getEmployerOpportunities()]).then(([dashboard, rows]) => { setStats(dashboard); setItems(rows.slice(0, 5)); }).catch((requestError) => setError(getApiError(requestError))); }, []); return <><Intro eyebrow="EMPLOYER DASHBOARD" title={`Welcome, ${user?.first_name || "Employer"}`} copy="Manage your organisation, opportunities and applicants." action={<Link className="button primary small" to="/employer/opportunities/new"><Icon name="plus"/>Post opportunity</Link>}/>{error && <div className="form-error">{error}</div>}<div className="verification"><Icon name="shield"/><span><b>Verification: {stats?.verification_status || "Not submitted"}</b><p>Only approved organisations can submit opportunities for publication.</p></span></div><div className="stats"><Stat label="Active opportunities" value={stats?.active_opportunities ?? 0} note="Published listings" icon="briefcase"/><Stat label="Total applicants" value={stats?.total_applicants ?? 0} note={`${stats?.shortlisted_applicants ?? 0} shortlisted`} tone="teal" icon="user"/><Stat label="Verification" value={stats?.verification_status || "—"} note="Organisation status" tone="purple" icon="shield"/></div><section className="panel"><h2 className="form-title">Recent opportunities</h2><OpportunityTable opportunities={items}/></section></>; }

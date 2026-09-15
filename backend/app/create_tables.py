@@ -1,10 +1,17 @@
 from .database import Base, engine
 from .models import (
+    AdminActivity,
+    AdminProfile,
     EmployerProfile,
+    JobApplication,
     JobSeekerProfile,
+    Notification,
+    Opportunity,
     PasswordResetToken,
+    SavedOpportunity,
     User,
 )
+
 
 def create_tables():
     Base.metadata.create_all(bind=engine)

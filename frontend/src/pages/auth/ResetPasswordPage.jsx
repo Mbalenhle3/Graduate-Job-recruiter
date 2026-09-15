@@ -48,7 +48,7 @@ export default function ResetPasswordPage() {
         {complete ? (
           <>
             <div className="success"><Icon name="check" />Your password was updated successfully.</div>
-            <Link className="button primary" to="/login">Continue to sign in</Link>
+            <Link className="button primary" to="/">Continue to sign in</Link>
           </>
         ) : (
           <>

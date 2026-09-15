@@ -2,44 +2,68 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
-from .routers import auth, employers, job_seekers
-from .routers.auth import router as auth_router
-from .routers.job_seekers import router as job_seekers_router
-from .database import get_database
 
+from .database import get_database
+from .routers import auth, employers, job_seekers
+from .routers import (
+    auth,
+    employer_opportunities,
+    employers,
+    job_seekers,
+)
+from .routers import (
+    admins,
+    auth,
+    dashboards,
+    employer_applications,
+    employer_opportunities,
+    employers,
+    job_applications,
+    job_seekers,
+    notifications,
+)
 
 app = FastAPI(
     title="GraduateLink SA API",
-    version="1.0.0"
+    version="1.0.0",
 )
-app.include_router(auth_router)
-app.include_router(job_seekers_router)
-app.include_router(employers.router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+app.include_router(auth.router)
+app.include_router(job_seekers.router)
+app.include_router(employers.router)
+app.include_router(employer_opportunities.router)
+app.include_router(employer_applications.router)
+app.include_router(job_applications.router)
+app.include_router(admins.router)
+app.include_router(dashboards.router)
+app.include_router(notifications.router)
 
 @app.get("/api/health")
 def health_check():
     return {
         "status": "success",
-        "message": "GraduateLink SA backend is running"
+        "message": "GraduateLink SA backend is running",
     }
 
 
 @app.get("/api/health/database")
 def database_health_check(
-    database: Session = Depends(get_database)
+    database: Session = Depends(get_database),
 ):
     database.execute(text("SELECT 1"))
 
     return {
         "status": "success",
-        "message": "PostgreSQL is connected"
+        "message": "PostgreSQL is connected",
     }

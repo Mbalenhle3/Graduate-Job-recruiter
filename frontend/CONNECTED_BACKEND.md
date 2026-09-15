@@ -1,44 +1,58 @@
-# GraduateLink SA frontend connection
+# GraduateLink SA connected frontend
 
-## Backend address
+## One backend address
 
-The backend address is stored once in `.env`:
+The API address is stored once in `.env`:
 
 ```env
 VITE_API_BASE_URL=http://127.0.0.1:8000
 ```
 
-Restart Vite after changing this value.
+If the backend runs on another computer, change only this value, for example:
 
-## Connected features
+```env
+VITE_API_BASE_URL=http://192.168.1.20:8000
+```
 
-- Account registration: `POST /api/auth/signup`
-- Account sign-in: `POST /api/auth/signin`
-- Current session validation: `GET /api/auth/me`
-- Forgot password email: `POST /api/auth/forgot-password`
-- Password reset: `POST /api/auth/reset-password`
-- View job-seeker profile: `GET /api/job-seekers/me/profile`
-- Save job-seeker profile: `PUT /api/job-seekers/me/profile`
-- Bearer token added automatically to protected API requests
-- Role-based route protection using the role returned by FastAPI
+Restart Vite after changing `.env`.
+
+## Organised home page
+
+Open `http://localhost:5173/`. The user first chooses:
+
+- Job Seeker
+- Employer
+- Administrator
+
+Each choice opens the correct sign-in page. Job seekers and employers can register. Administrator accounts are created privately by the backend script.
+
+## Connected areas
+
+- Authentication and password reset
+- Job-seeker profile and dashboard
+- Published opportunities, saved jobs and PDF applications
+- Application tracking and withdrawal
+- Employer profile and verification document submission
+- Employer opportunities and applicant management
+- Administrator dashboard, employer verification and opportunity review
+- User suspension/reactivation and audit activity
+- Notifications for every authenticated role
 
 ## Run locally
 
-Start FastAPI from the `backend` folder:
+Backend:
 
 ```powershell
+cd backend
 python -m uvicorn app.main:app --reload
 ```
 
-Start React from the `frontend` folder:
+Frontend:
 
 ```powershell
+cd frontend
 npm install
 npm run dev
 ```
 
-## Still awaiting backend endpoints
-
-The opportunity, application, saved-job, employer, administrator and CV-upload
-screens still display prototype data. They must be connected as their FastAPI
-models and endpoints are implemented.
+Use `npm run lint` and `npm run build` to verify the frontend.

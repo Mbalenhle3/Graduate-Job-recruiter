@@ -41,7 +41,7 @@ export default function ForgotPasswordPage() {
             <button className="button primary" disabled={submitting}>{submitting ? "Sending..." : "Send reset link"}</button>
           </>
         )}
-        <small><Link to="/login">Return to sign in</Link></small>
+        <small><Link to="/">Return to account selection</Link></small>
       </form>
     </AuthFrame>
   );

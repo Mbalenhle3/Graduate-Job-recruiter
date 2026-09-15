@@ -156,7 +156,7 @@ export default function JobSeekerProfilePage() {
         <label>One project or experience per line<textarea rows="5" value={draft.projects.join("\n")} onChange={(event) => change("projects", event.target.value.split("\n").filter(Boolean))} /></label>
 
         <h2 className="form-title">Curriculum Vitae</h2>
-        <div className="item-row"><Icon name="doc" /><span><b>CV upload will be connected next</b><small>The backend does not have a CV upload endpoint yet.</small></span></div>
+        <div className="item-row"><Icon name="doc" /><span><b>Your CV is uploaded when you apply</b><small>Open an opportunity, select your PDF CV and submit your application.</small></span></div>
       </section>
     </>
   );

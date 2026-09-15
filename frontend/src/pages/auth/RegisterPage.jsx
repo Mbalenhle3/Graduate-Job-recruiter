@@ -7,11 +7,11 @@ import { getApiError } from "../../services/api";
 import AuthFrame from "./AuthFrame";
 
 
-export default function RegisterPage() {
+export default function RegisterPage({ fixedRole }) {
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  const [role, setRole] = useState("job_seeker");
+  const [role, setRole] = useState(fixedRole || "job_seeker");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -85,7 +85,7 @@ export default function RegisterPage() {
           </div>
         )}
 
-        <label>
+        {!fixedRole && <label>
           Account type
 
           <select
@@ -102,7 +102,7 @@ export default function RegisterPage() {
               Employer
             </option>
           </select>
-        </label>
+        </label>}
 
         <label>
           First name
@@ -210,10 +210,11 @@ export default function RegisterPage() {
 
         <small>
           Already registered?{" "}
-          <Link to="/login">
+          <Link to={`/auth/${role === "employer" ? "employer" : "job-seeker"}/signin`}>
             Sign in
           </Link>
         </small>
+        <small><Link to="/">Choose another account area</Link></small>
       </form>
     </AuthFrame>
   );

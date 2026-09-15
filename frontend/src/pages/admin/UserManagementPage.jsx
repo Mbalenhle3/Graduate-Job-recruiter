@@ -1,24 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Intro, Status } from "../../components/common/AppUI";
-
-const initialUsers = [
-  {id:1,name:"Naledi Mthembu",role:"Job Seeker",status:"Active"},
-  {id:2,name:"Thrive Digital",role:"Employer",status:"Active"},
-  {id:3,name:"Sample Account",role:"Job Seeker",status:"Suspended"},
-];
-
-export default function UserManagementPage() {
-  const [users,setUsers] = useState(initialUsers);
-  const toggle = (id) => setUsers((list) => list.map((item) => item.id === id ? {...item,status:item.status === "Active" ? "Suspended" : "Active"} : item));
-
-  return <>
-    <Intro eyebrow="USER MANAGEMENT" title="Manage account access" copy="View roles and suspend or restore accounts."/>
-    <section className="panel"><div className="table-wrap"><table>
-      <thead><tr><th>User</th><th>Role</th><th>Status</th><th>Action</th></tr></thead>
-      <tbody>{users.map((user) => <tr key={user.id}>
-        <td><b>{user.name}</b></td><td>{user.role}</td><td><Status>{user.status}</Status></td>
-        <td><button className="text-action" onClick={() => toggle(user.id)}>{user.status === "Active" ? "Suspend" : "Restore"}</button></td>
-      </tr>)}</tbody>
-    </table></div></section>
-  </>;
-}
+import { getApiError } from "../../services/api";
+import { getAdminUsers, updateUserStatus } from "../../services/platformService";
+export default function UserManagementPage() { const [users, setUsers] = useState([]), [role, setRole] = useState(""), [error, setError] = useState(""); useEffect(() => { getAdminUsers(role ? { role } : {}).then(setUsers).catch((requestError) => setError(getApiError(requestError))); }, [role]); async function toggle(user) { const action = user.is_active ? "suspend" : "activate"; let reason = null; if (action === "suspend") { reason = prompt("Reason for suspension"); if (!reason?.trim()) return; } try { const updated = await updateUserStatus(user.id,{ action, reason }); setUsers((list) => list.map((row) => row.id === user.id ? updated : row)); } catch (requestError) { setError(getApiError(requestError)); } } return <><Intro eyebrow="USER MANAGEMENT" title="Manage account access" copy="View roles and suspend or restore accounts."/>{error && <div className="form-error">{error}</div>}<div className="tabs">{[["","All"],["job_seeker","Job seekers"],["employer","Employers"],["admin","Administrators"]].map(([value,label]) => <button key={value || "all"} className={role === value ? "active" : ""} onClick={() => setRole(value)}>{label}</button>)}</div><section className="panel"><div className="table-wrap"><table><thead><tr><th>User</th><th>Role</th><th>Status</th><th>Action</th></tr></thead><tbody>{users.map((user) => <tr key={user.id}><td><b>{user.first_name} {user.last_name}</b><span>{user.email}</span></td><td>{user.role.replaceAll("_"," ")}</td><td><Status>{user.is_active ? "Active" : "Suspended"}</Status></td><td><button className="text-action" onClick={() => toggle(user)}>{user.is_active ? "Suspend" : "Restore"}</button></td></tr>)}</tbody></table></div></section></>; }
