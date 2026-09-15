@@ -2,8 +2,9 @@ from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+from .routers import auth, employers, job_seekers
 from .routers.auth import router as auth_router
-
+from .routers.job_seekers import router as job_seekers_router
 from .database import get_database
 
 
@@ -12,6 +13,8 @@ app = FastAPI(
     version="1.0.0"
 )
 app.include_router(auth_router)
+app.include_router(job_seekers_router)
+app.include_router(employers.router)
 
 app.add_middleware(
     CORSMiddleware,

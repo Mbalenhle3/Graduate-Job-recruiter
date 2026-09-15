@@ -4,8 +4,23 @@ from pydantic import BaseModel, EmailStr, Field
 
 
 class SignupRequest(BaseModel):
+    first_name: str = Field(
+        min_length=2,
+        max_length=100,
+    )
+
+    last_name: str = Field(
+        min_length=2,
+        max_length=100,
+    )
+
     email: EmailStr
-    password: str = Field(min_length=8, max_length=128)
+
+    password: str = Field(
+        min_length=8,
+        max_length=128,
+    )
+
     role: Literal["job_seeker", "employer"]
 
 
@@ -16,6 +31,8 @@ class SigninRequest(BaseModel):
 
 class UserResponse(BaseModel):
     id: int
+    first_name: str | None
+    last_name: str | None
     email: EmailStr
     role: str
     is_active: bool

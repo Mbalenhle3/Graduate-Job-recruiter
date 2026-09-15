@@ -7,6 +7,15 @@ from .auth import (
     SigninRequest,
     SignupRequest,
     UserResponse,
+    
+)
+from .job_seeker import (
+    JobSeekerProfileResponse,
+    JobSeekerProfileUpdate,
+)
+from .employer import (
+    EmployerProfileResponse,
+    EmployerProfileUpdate,
 )
 
 __all__ = [
@@ -18,4 +27,8 @@ __all__ = [
     "SigninRequest",
     "SignupRequest",
     "UserResponse",
+    "JobSeekerProfileResponse",
+    "JobSeekerProfileUpdate",
+    "EmployerProfileResponse",
+    "EmployerProfileUpdate",
 ]

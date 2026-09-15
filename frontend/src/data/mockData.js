@@ -1,5 +1,5 @@
 export const ROLE_HOME = {
-  seeker: "/job-seeker/dashboard",
+  job_seeker: "/job-seeker/dashboard",
   employer: "/employer/dashboard",
   admin: "/admin/dashboard",
 };

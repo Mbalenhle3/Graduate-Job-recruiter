@@ -1,5 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
+import smtplib
+from ..email_service import send_password_reset_email
 from ..config import settings
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta, timezone
@@ -54,6 +56,8 @@ def signup(
         )
 
     user = User(
+        first_name=signup_data.first_name.strip(),
+        last_name=signup_data.last_name.strip(),
         email=email,
         password_hash=hash_password(signup_data.password),
         role=signup_data.role,
@@ -162,17 +166,22 @@ def forgot_password(
     )
 
     database.add(password_reset)
-    database.commit()
 
-    response = {
+    try:
+        send_password_reset_email(user.email, reset_token)
+        database.commit()
+    except (smtplib.SMTPException, OSError) as error:
+        print("EMAIL ERROR:", repr(error))
+        database.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Email could not be sent. Please try again later.",
+        )
+
+    return {
         "message": message,
         "reset_token": None,
     }
-
-    if settings.app_environment == "development":
-        response["reset_token"] = reset_token
-
-    return response
 
 
 @router.post(
