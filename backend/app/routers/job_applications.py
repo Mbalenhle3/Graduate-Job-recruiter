@@ -260,7 +260,7 @@ def get_published_opportunity(
 def apply_for_opportunity(
     opportunity_id: int,
     cover_letter: str | None = Form(default=None),
-    resume: UploadFile = File(...),
+    resume: UploadFile | None = File(default=None),
     current_user: User = Depends(
         require_roles("job_seeker")
     ),
@@ -308,10 +308,7 @@ def apply_for_opportunity(
     if not employer_profile:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail=(
-                "The employer profile "
-                "could not be found"
-            ),
+            detail="The employer profile was not found",
         )
 
     existing_application = database.scalar(
@@ -332,38 +329,82 @@ def apply_for_opportunity(
             ),
         )
 
-    if (
-        cover_letter
-        and len(cover_letter.strip()) > 5000
-    ):
-        raise HTTPException(
-            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=(
-                "The cover letter must not exceed "
-                "5000 characters"
-            ),
+    cleaned_cover_letter = None
+
+    if cover_letter and cover_letter.strip():
+        cleaned_cover_letter = cover_letter.strip()
+
+        if len(cleaned_cover_letter) > 5000:
+            raise HTTPException(
+                status_code=(
+                    status.HTTP_422_UNPROCESSABLE_ENTITY
+                ),
+                detail=(
+                    "The cover letter must not exceed "
+                    "5000 characters"
+                ),
+            )
+
+    # -----------------------------------------------------
+    # SELECT THE CV
+    # -----------------------------------------------------
+
+    if resume is not None:
+        # The applicant selected a different CV.
+        if resume.content_type != "application/pdf":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="The CV must be a PDF file",
+            )
+
+        resume_content = resume.file.read(
+            settings.max_resume_bytes + 1
         )
 
-    if resume.content_type != "application/pdf":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="The CV must be a PDF file",
+        resume_name = Path(
+            resume.filename or "curriculum-vitae.pdf"
+        ).name
+
+    else:
+        # No new file was selected, so use the saved CV.
+        if not profile.cv_path:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=(
+                    "Upload a CV in your career profile "
+                    "or select a CV for this application"
+                ),
+            )
+
+        saved_cv_path = Path(profile.cv_path)
+
+        if not saved_cv_path.is_file():
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=(
+                    "Your saved CV could not be found. "
+                    "Please upload it again"
+                ),
+            )
+
+        resume_content = saved_cv_path.read_bytes()
+
+        resume_name = (
+            profile.cv_name
+            or "curriculum-vitae.pdf"
         )
 
-    resume_content = resume.file.read(
-        settings.max_resume_bytes + 1
-    )
+    # -----------------------------------------------------
+    # VALIDATE THE CV
+    # -----------------------------------------------------
 
     if not resume_content:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="The uploaded CV is empty",
+            detail="The selected CV is empty",
         )
 
-    if (
-        len(resume_content)
-        > settings.max_resume_bytes
-    ):
+    if len(resume_content) > settings.max_resume_bytes:
         raise HTTPException(
             status_code=(
                 status.HTTP_413_REQUEST_ENTITY_TOO_LARGE
@@ -374,12 +415,10 @@ def apply_for_opportunity(
     if not resume_content.startswith(b"%PDF-"):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=(
-                "The uploaded file is not "
-                "a valid PDF"
-            ),
+            detail="The selected CV is not a valid PDF",
         )
 
+    # Store a separate copy for this application.
     upload_directory = (
         Path(settings.upload_directory)
         / "resumes"
@@ -391,44 +430,31 @@ def apply_for_opportunity(
     )
 
     stored_filename = f"{uuid4().hex}.pdf"
-
-    resume_path = (
+    application_cv_path = (
         upload_directory / stored_filename
     )
 
-    safe_original_filename = Path(
-        resume.filename or "resume.pdf"
-    ).name
-
-    resume_path.write_bytes(resume_content)
-
-    application = JobApplication(
-        job_seeker_profile_id=profile.user_id,
-        opportunity_id=opportunity.id,
-        cover_letter=(
-            cover_letter.strip()
-            if cover_letter
-            and cover_letter.strip()
-            else None
-        ),
-        resume_name=safe_original_filename,
-        resume_path=str(resume_path),
-        status="submitted",
-    )
-
     try:
-        database.add(application)
+        application_cv_path.write_bytes(
+            resume_content
+        )
 
-        # Flush creates the application ID without
-        # committing the transaction.
+        application = JobApplication(
+            job_seeker_profile_id=profile.user_id,
+            opportunity_id=opportunity.id,
+            cover_letter=cleaned_cover_letter,
+            resume_name=resume_name,
+            resume_path=str(application_cv_path),
+            status="submitted",
+        )
+
+        database.add(application)
         database.flush()
 
         create_notification(
             database=database,
             user_id=employer_profile.user_id,
-            notification_type=(
-                "APPLICATION_RECEIVED"
-            ),
+            notification_type="APPLICATION_RECEIVED",
             title="New job application",
             message=(
                 f"{current_user.first_name} "
@@ -442,9 +468,7 @@ def apply_for_opportunity(
         create_notification(
             database=database,
             user_id=current_user.id,
-            notification_type=(
-                "APPLICATION_SUBMITTED"
-            ),
+            notification_type="APPLICATION_SUBMITTED",
             title="Application submitted",
             message=(
                 f'Your application for '
@@ -461,8 +485,8 @@ def apply_for_opportunity(
     except IntegrityError as error:
         database.rollback()
 
-        if resume_path.is_file():
-            resume_path.unlink()
+        if application_cv_path.is_file():
+            application_cv_path.unlink()
 
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
@@ -475,13 +499,12 @@ def apply_for_opportunity(
     except Exception:
         database.rollback()
 
-        if resume_path.is_file():
-            resume_path.unlink()
+        if application_cv_path.is_file():
+            application_cv_path.unlink()
 
         raise
 
     return application
-
 
 # =========================================================
 # JOB-SEEKER APPLICATIONS

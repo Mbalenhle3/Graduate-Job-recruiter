@@ -96,6 +96,11 @@ class JobSeekerProfile(Base):
         nullable=False,
     )
 
+    cv_name: Mapped[str | None] = mapped_column(
+        String(255),
+        nullable=True,
+    )
+
     cv_path: Mapped[str | None] = mapped_column(
         String(500),
         nullable=True,

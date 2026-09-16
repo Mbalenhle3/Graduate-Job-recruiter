@@ -9,7 +9,7 @@ export const getOpportunity = async (id) => (await api.get(`/api/opportunities/$
 export const applyForOpportunity = async (id, coverLetter, resume) => {
   const body = new FormData();
   if (coverLetter) body.append("cover_letter", coverLetter);
-  body.append("resume", resume);
+  if (resume) body.append("resume", resume);
   return (await api.post(`/api/job-seekers/opportunities/${id}/apply`, body, {
     headers: { "Content-Type": "multipart/form-data" },
   })).data;
