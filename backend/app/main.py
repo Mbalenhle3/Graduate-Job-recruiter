@@ -21,6 +21,9 @@ from .routers import (
     job_applications,
     job_seekers,
     notifications,
+    appeals,
+    gradbot,
+    support,
 )
 
 app = FastAPI(
@@ -33,7 +36,7 @@ app.add_middleware(
     allow_origins=[
     "http://localhost:5173",
     "http://127.0.0.1:5173",
-    "http://10.11.76.218:5173",
+    "http://10.11.72.103:5173",
 ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -49,6 +52,9 @@ app.include_router(job_applications.router)
 app.include_router(admins.router)
 app.include_router(dashboards.router)
 app.include_router(notifications.router)
+app.include_router(appeals.router)
+app.include_router(gradbot.router)
+app.include_router(support.router)
 
 @app.get("/api/health")
 def health_check():

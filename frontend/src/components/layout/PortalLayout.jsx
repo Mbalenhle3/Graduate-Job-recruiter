@@ -89,6 +89,8 @@ const navigation = {
       "/admin/reports",
       "doc",
     ],
+    ["Appeals", "/admin/appeals", "doc"],
+    ["Support", "/admin/support", "doc"],
     ["My profile", "/admin/profile", "user"],
   ],
 };

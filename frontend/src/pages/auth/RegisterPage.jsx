@@ -70,7 +70,7 @@ export default function RegisterPage({ fixedRole }) {
       }
     >
       <form onSubmit={submit}>
-        <span>CREATE ACCOUNT</span>
+        
 
         <h2>Start your profile</h2>
 

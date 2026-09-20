@@ -54,3 +54,6 @@ export const getNotifications = async (params = {}) => (await api.get("/api/noti
 export const getUnreadCount = async () => (await api.get("/api/notifications/unread-count")).data;
 export const markNotificationRead = async (id) => (await api.patch(`/api/notifications/${id}/read`)).data;
 export const markAllNotificationsRead = async () => (await api.patch("/api/notifications/read-all")).data;
+
+export const getAppeals = async () => (await api.get("/api/admin/appeals")).data;
+export const reviewAppeal = async (id, body) => (await api.patch(`/api/admin/appeals/${id}`, body)).data;

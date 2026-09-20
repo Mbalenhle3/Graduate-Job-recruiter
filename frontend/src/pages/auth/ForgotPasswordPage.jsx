@@ -29,7 +29,6 @@ export default function ForgotPasswordPage() {
   return (
     <AuthFrame title="Reset your password" copy="Recover access to your GraduateLink account.">
       <form onSubmit={submit}>
-        <span>PASSWORD RECOVERY</span>
         <h2>Forgot password?</h2>
         {sent ? (
           <div className="success"><Icon name="check" />If that account exists, reset instructions have been sent to its email.</div>
