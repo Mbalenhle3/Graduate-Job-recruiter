@@ -1,5 +1,0 @@
-transformers>=4.51,<6
-peft>=0.15,<1
-accelerate>=1.5,<2
-torch>=2.5,<3
-bitsandbytes>=0.45,<1
