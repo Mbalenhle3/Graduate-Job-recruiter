@@ -11,6 +11,8 @@ from .saved_opportunity import SavedOpportunity
 from .password_reset_token import PasswordResetToken
 from .notification import Notification
 from .user import User
+from .account_appeal import AccountAppeal
+from .support_request import SupportRequest
 
 
 __all__ = [
@@ -26,4 +28,6 @@ __all__ = [
     "PasswordResetToken",
     "Notification",
     "User",
+    "AccountAppeal",
+    "SupportRequest",
 ]
