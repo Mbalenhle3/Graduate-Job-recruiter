@@ -33,8 +33,10 @@ from ..schemas import (
     JobSeekerApplicationResponse,
     MessageResponse,
     PublicOpportunityResponse,
+    OpportunityMatchResponse,
     SavedOpportunityResponse,
 )
+from ..services.opportunity_matching import calculate_match
 
 
 router = APIRouter(
@@ -84,6 +86,7 @@ def public_opportunity_response(
         "title": opportunity.title,
         "description": opportunity.description,
         "requirements": opportunity.requirements,
+        "required_skills": opportunity.required_skills or [],
         "qualification": opportunity.qualification,
         "location": opportunity.location,
         "province": opportunity.province,
@@ -245,6 +248,46 @@ def get_published_opportunity(
         opportunity,
         employer_profile,
     )
+
+
+@router.get(
+    "/api/job-seekers/me/opportunity-matches",
+    response_model=list[OpportunityMatchResponse],
+)
+def list_my_opportunity_matches(
+    current_user: User = Depends(require_roles("job_seeker")),
+    database: Session = Depends(get_database),
+):
+    profile = get_job_seeker_profile(current_user, database)
+    opportunities = database.scalars(
+        select(Opportunity).where(
+            Opportunity.status == "published",
+            Opportunity.closing_date >= date.today(),
+        )
+    ).all()
+    return [calculate_match(profile, opportunity) for opportunity in opportunities]
+
+
+@router.get(
+    "/api/job-seekers/opportunities/{opportunity_id}/match",
+    response_model=OpportunityMatchResponse,
+)
+def get_my_opportunity_match(
+    opportunity_id: int,
+    current_user: User = Depends(require_roles("job_seeker")),
+    database: Session = Depends(get_database),
+):
+    profile = get_job_seeker_profile(current_user, database)
+    opportunity = database.scalar(
+        select(Opportunity).where(
+            Opportunity.id == opportunity_id,
+            Opportunity.status == "published",
+            Opportunity.closing_date >= date.today(),
+        )
+    )
+    if not opportunity:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="The opportunity was not found or has already closed")
+    return calculate_match(profile, opportunity)
 
 
 # =========================================================

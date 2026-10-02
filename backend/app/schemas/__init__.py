@@ -49,6 +49,10 @@ from .notification import (
     NotificationResponse,
     NotificationUnreadCountResponse,
 )
+from .matching import (
+    MatchFactorResponse,
+    OpportunityMatchResponse,
+)
 
 __all__ = [
     "AuthenticationResponse",
@@ -86,4 +90,6 @@ __all__ = [
     "EmployerDashboardResponse",
     "NotificationResponse",
     "NotificationUnreadCountResponse",
+    "MatchFactorResponse",
+    "OpportunityMatchResponse",
 ]

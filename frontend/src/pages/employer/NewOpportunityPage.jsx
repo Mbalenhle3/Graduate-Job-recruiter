@@ -3,4 +3,35 @@ import { useNavigate } from "react-router-dom";
 import { Icon, Intro } from "../../components/common/AppUI";
 import { getApiError } from "../../services/api";
 import { createOpportunity, submitOpportunity } from "../../services/platformService";
-export default function NewOpportunityPage() { const navigate = useNavigate(); const [error, setError] = useState(""), [submitting, setSubmitting] = useState(false); async function submit(event) { event.preventDefault(); setSubmitting(true); setError(""); const form = new FormData(event.currentTarget); const body = { title: form.get("title"), description: form.get("description"), requirements: form.get("requirements") || null, qualification: form.get("qualification") || null, location: form.get("location") || null, province: form.get("province") || null, work_mode: form.get("work_mode"), opportunity_type: form.get("opportunity_type"), required_experience_years: 0, closing_date: form.get("closing_date") }; try { const draft = await createOpportunity(body); await submitOpportunity(draft.id); navigate("/employer/opportunities"); } catch (requestError) { setError(getApiError(requestError)); } finally { setSubmitting(false); } } return <><Intro eyebrow="NEW OPPORTUNITY" title="Create an early-career opportunity" copy="It will be sent to the Administrator for review."/>{error && <div className="form-error">{error}</div>}<form className="panel long-form" onSubmit={submit}><div className="form-grid"><label className="wide">Opportunity title<input name="title" required/></label><label>Type<select name="opportunity_type"><option value="graduate_programme">Graduate programme</option><option value="internship">Internship</option><option value="learnership">Learnership</option><option value="entry_level_job">Entry-level job</option></select></label><label>Work arrangement<select name="work_mode"><option value="hybrid">Hybrid</option><option value="remote">Remote</option><option value="on_site">On-site</option></select></label><label>Location<input name="location"/></label><label>Province<input name="province"/></label><label>Closing date<input name="closing_date" type="date" required/></label><label>Qualification<input name="qualification"/></label><label className="wide">Requirements<textarea name="requirements" rows="4"/></label><label className="wide">Description<textarea name="description" rows="6" required/></label></div><div className="auth-note"><Icon name="shield"/>Only verified employers can submit opportunities.</div><div className="form-actions"><button className="button primary" disabled={submitting}>{submitting ? "Submitting..." : "Create and submit for approval"}</button></div></form></>; }
+
+export default function NewOpportunityPage() {
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  async function submit(event) {
+    event.preventDefault(); setSubmitting(true); setError("");
+    const form = new FormData(event.currentTarget);
+    const body = {
+      title: form.get("title"),
+      description: form.get("description"),
+      requirements: form.get("requirements") || null,
+      required_skills: String(form.get("required_skills") || "").split(",").map((item) => item.trim()).filter(Boolean),
+      qualification: form.get("qualification") || null,
+      location: form.get("location"),
+      province: form.get("province"),
+      work_mode: form.get("work_mode"),
+      opportunity_type: form.get("opportunity_type"),
+      required_experience_years: Number(form.get("required_experience_years") || 0),
+      closing_date: form.get("closing_date"),
+    };
+    try {
+      const draft = await createOpportunity(body);
+      await submitOpportunity(draft.id);
+      navigate("/employer/opportunities");
+    } catch (requestError) { setError(getApiError(requestError)); }
+    finally { setSubmitting(false); }
+  }
+
+  return <><Intro eyebrow="NEW OPPORTUNITY" title="Create an early-career opportunity" copy="It will be sent to the Administrator for review."/>{error && <div className="form-error">{error}</div>}<form className="panel long-form" onSubmit={submit}><div className="form-grid"><label className="wide">Opportunity title<input name="title" required/></label><label>Type<select name="opportunity_type"><option value="graduate_programme">Graduate programme</option><option value="internship">Internship</option><option value="learnership">Learnership</option><option value="entry_level_job">Entry-level job</option></select></label><label>Work arrangement<select name="work_mode"><option value="hybrid">Hybrid</option><option value="remote">Remote</option><option value="on_site">On-site</option></select></label><label>Location<input name="location" required/></label><label>Province<input name="province" required/></label><label>Closing date<input name="closing_date" type="date" required/></label><label>Qualification or field<input name="qualification"/></label><label>Relevant experience required (years)<input name="required_experience_years" type="number" min="0" max="5" defaultValue="0"/></label><label className="wide">Required skills (separate with commas)<input name="required_skills" placeholder="Example: Python, SQL, communication"/></label><label className="wide">Other requirements<textarea name="requirements" rows="4"/></label><label className="wide">Description<textarea name="description" rows="6" required/></label></div><div className="auth-note"><Icon name="shield"/>Only verified employers can submit opportunities. Skills, qualification, experience and location are used in advisory matching.</div><div className="form-actions"><button className="button primary" disabled={submitting}>{submitting ? "Submitting..." : "Create and submit for approval"}</button></div></form></>;
+}

@@ -537,6 +537,7 @@ def build_admin_opportunity_response(
         "title": opportunity.title,
         "description": opportunity.description,
         "requirements": opportunity.requirements,
+        "required_skills": opportunity.required_skills or [],
         "qualification": opportunity.qualification,
         "location": opportunity.location,
         "province": opportunity.province,

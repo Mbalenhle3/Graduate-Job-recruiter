@@ -34,6 +34,11 @@ class OpportunityCreate(BaseModel):
 
     requirements: str | None = None
 
+    required_skills: list[str] = Field(
+        default_factory=list,
+        max_length=30,
+    )
+
     qualification: str | None = Field(
         default=None,
         max_length=255,
@@ -53,12 +58,11 @@ class OpportunityCreate(BaseModel):
 
     opportunity_type: OpportunityType
 
-    # GraduateLink opportunities must not require
-    # previous employment experience.
+    # Early-career opportunities may request limited relevant experience.
     required_experience_years: int = Field(
         default=0,
         ge=0,
-        le=0,
+        le=5,
     )
 
     closing_date: date
@@ -91,6 +95,11 @@ class OpportunityUpdate(BaseModel):
 
     requirements: str | None = None
 
+    required_skills: list[str] | None = Field(
+        default=None,
+        max_length=30,
+    )
+
     qualification: str | None = Field(
         default=None,
         max_length=255,
@@ -115,7 +124,7 @@ class OpportunityUpdate(BaseModel):
     required_experience_years: int | None = Field(
         default=None,
         ge=0,
-        le=0,
+        le=5,
     )
 
     closing_date: date | None = None
@@ -141,6 +150,7 @@ class OpportunityResponse(BaseModel):
     title: str
     description: str
     requirements: str | None
+    required_skills: list[str]
     qualification: str | None
 
     location: str

@@ -6,6 +6,7 @@ from sqlalchemy import (
     DateTime,
     ForeignKey,
     Integer,
+    JSON,
     String,
     Text,
     func,
@@ -132,5 +133,11 @@ class Opportunity(Base):
         DateTime(timezone=True),
         server_default=func.now(),
         onupdate=func.now(),
+        nullable=False,
+    )
+
+    required_skills: Mapped[list] = mapped_column(
+        JSON,
+        default=list,
         nullable=False,
     )

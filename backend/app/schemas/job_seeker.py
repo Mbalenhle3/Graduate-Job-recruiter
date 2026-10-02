@@ -69,6 +69,12 @@ class JobSeekerProfileUpdate(BaseModel):
         default_factory=list,
     )
 
+    experience_years: int = Field(
+        default=0,
+        ge=0,
+        le=50,
+    )
+
 
 class JobSeekerProfileResponse(
     JobSeekerProfileUpdate

@@ -6,6 +6,8 @@ export const getAdminDashboard = async () => (await api.get("/api/admin/dashboar
 
 export const getOpportunities = async (params = {}) => (await api.get("/api/opportunities", { params })).data;
 export const getOpportunity = async (id) => (await api.get(`/api/opportunities/${id}`)).data;
+export const getOpportunityMatches = async () => (await api.get("/api/job-seekers/me/opportunity-matches")).data;
+export const getOpportunityMatch = async (id) => (await api.get(`/api/job-seekers/opportunities/${id}/match`)).data;
 export const applyForOpportunity = async (id, coverLetter, resume) => {
   const body = new FormData();
   if (coverLetter) body.append("cover_letter", coverLetter);

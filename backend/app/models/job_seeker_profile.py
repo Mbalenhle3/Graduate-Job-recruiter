@@ -1,4 +1,4 @@
-from sqlalchemy import ForeignKey, JSON, String, Text
+from sqlalchemy import ForeignKey, Integer, JSON, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from ..database import Base
@@ -104,4 +104,10 @@ class JobSeekerProfile(Base):
     cv_path: Mapped[str | None] = mapped_column(
         String(500),
         nullable=True,
+    )
+
+    experience_years: Mapped[int] = mapped_column(
+        Integer,
+        default=0,
+        nullable=False,
     )

@@ -47,3 +47,21 @@
 .gradbot-messages{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:10px}.gradbot-message{background:#f0f5fb;padding:9px 12px;border-radius:10px;max-width:90%;line-height:1.5}.gradbot-message.you{align-self:flex-end;background:#e6f7f3}.gradbot-message p{margin:0 0 4px}.gradbot-message a{display:block;word-break:break-word;color:#1759ba}
 .gradbot-window form{display:flex;gap:8px;padding:9px;border-top:1px solid #d6e2ef}.gradbot-window form input{flex:1;min-width:0;padding:9px;border:1px solid #cedbea;border-radius:8px}.gradbot-window form button{border:0;border-radius:8px;padding:0 12px;background:#ea7931;color:#fff;cursor:pointer}.gradbot-window small{padding:0 12px 8px;color:#53637b}.gradbot-suggestions{display:flex;gap:5px;padding:5px 10px;overflow:auto}.gradbot-suggestions button{white-space:nowrap;background:#eaf1fc;color:#183254;border:0;padding:5px 8px;border-radius:9px;cursor:pointer}
 .appeal-page{max-width:720px;margin:60px auto;padding:22px;color:#183254}.appeal-page form{display:grid;gap:18px;margin:24px 0}.appeal-page label{display:grid;gap:8px;font-weight:700}.appeal-page input,.appeal-page textarea{padding:12px;border:1px solid #cedbea;border-radius:8px;font:inherit}.appeal-page button{justify-self:start}
+
+/* Public opportunity browsing and transparent advisory matching */
+.guest-jobs-button{display:inline-flex;margin-top:18px;gap:8px}
+.public-opportunities{min-height:100vh;background:#f4f7fb;padding:34px max(22px,calc((100vw - 1180px)/2)) 70px;color:var(--navy)}
+.public-jobs-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:38px}
+.public-jobs-nav>a:first-child{font:800 18px Manrope;color:var(--navy)}
+.public-detail{padding-top:24px}
+.job-skills{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0}
+.job-skills span{font-size:9px;font-weight:700;color:#285fae;background:#eaf1ff;border-radius:20px;padding:5px 8px}
+.job-match{margin-left:auto;color:var(--teal);font-size:11px}
+.match-breakdown{display:grid;margin:10px 0 16px}
+.match-breakdown>div{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;border-bottom:1px solid #edf1f5;padding:10px 0}
+.match-breakdown span,.match-breakdown small{display:block}
+.match-breakdown span{font-size:10px;font-weight:800;color:var(--navy)}
+.match-breakdown small{margin-top:3px;color:var(--muted);font-weight:400;line-height:1.4}
+.match-breakdown b{font-size:10px;color:var(--teal)}
+.match-disclaimer{background:#fff7ed;border:1px solid #fed7aa;border-radius:8px;padding:9px;color:#9a4b13!important;line-height:1.45}
+@media(max-width:590px){.public-opportunities{padding:22px 14px 45px}.public-jobs-nav{margin-bottom:26px}}

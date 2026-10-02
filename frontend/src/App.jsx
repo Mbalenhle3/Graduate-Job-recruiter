@@ -24,6 +24,8 @@ export default function App() {
   if (loading) return <div className="app-loading">Checking your session...</div>;
   return <><Routes>
     <Route path="/" element={<HomePage />} />
+    <Route path="/opportunities" element={<JobsPage publicMode />} />
+    <Route path="/opportunities/:id" element={<JobDetailsPage publicMode />} />
     <Route path="/appeal" element={<AppealPage />} />
     <Route path="/support" element={<SupportPage />} />
     <Route path="/auth/job-seeker/signin" element={user ? <Navigate to={ROLE_HOME[user.role]} replace /> : <SignInPage expectedRole="job_seeker" />} />

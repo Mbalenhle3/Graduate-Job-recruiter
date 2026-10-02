@@ -83,6 +83,7 @@ class PublicOpportunityResponse(BaseModel):
     title: str
     description: str
     requirements: str | None
+    required_skills: list[str]
     qualification: str | None
 
     location: str | None
